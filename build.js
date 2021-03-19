@@ -1,121 +1,85 @@
-// Libriries
-const fse = require('fs-extra');
-const path = require('path');
-const ejs = require('ejs');
-const frontMatter = require('front-matter');
-const glob = require('glob');
-// Utilities
-const fileGenerator = require('./filesGenerator/index');
-const pageContentGenerator = require('./pageContentGenerator/index');
-
-// Config
-const configPromise = require('./site.config');
 const [,, ...args] = process.argv
+const { exec } = require("child_process");
+var vm = require("vm");
+var fs = require("fs");
 
-let srcPath;
-let distPath;
-let widgetsOutputPath;
-let jsonSchema;
-let servicesOutputPath;
-const init = configPromise.init();
+const exe = async (string) => {
+    const coffeeProcess =  exec(string, (error, stdout, stderr) => {
+        if(error) {
+            console.log('error', error);
+        } 
+        if(stdout) {
+            console.log('stdout', stdout);
+        }
+        if(stderr) {
+            console.log('stderr', stderr);
+        }
+        
+    });
+    coffeeProcess.stdout.on('data', function(data) {
+        console.log(data);
+    });
+}
 
-const renderLayout = (pageData, templateConfig, pageContent, isWidget) => {
-  const layout = isWidget ? 'widget' : 'default';
-  const layoutFileName = `../templates/layouts/${layout}.ejs`;
-  const layoutData = fse.readFileSync(layoutFileName, 'utf-8');
-  return ejs.render(
-    layoutData,
-    Object.assign({}, templateConfig, {
-      body: pageContent,
-      filename: layoutFileName
-    })
-  );
+const create = async (args) => {
+    switch (args[1]) {
+        case 'app':
+            console.log(`generate app in ../${args[2]}`);
+            exe(`npx create-react-app --template file:./cra-template ${args[2]}`);
+            break;
+
+        case 'pages':
+            console.log(`generate pages in ../${args[2]}`);
+            exe(`node ./build/pages.js ${args[2]}`);
+            break;
+
+        case 'services':
+            console.log(`generate services in ../${args[2]}`);
+            exe(`node ./build/services.js ${args[2]}`);
+            break;
+
+        case 'widgets':
+            console.log(`generate widgets in ../${args[2]}`);
+            exe(`node ./build/widgets.js ${args[2]}`);
+            break;
+
+        case 'all':
+            console.log(`generate all in ../${args[2]}`);
+            await exe(`json-server --watch ./jsonServer/db.json`);
+            await exe(`node ./build/pages.js ${args[2]}`);
+            await exe(`node ./build/services.js ${args[2]}`);
+            await exe(`node ./build/widgets.js ${args[2]}`);
+            break;
+
+        default:
+            break;
+    }
 };
 
-const initializeServices = (config, servicesOutputPath) => {
-  for(var j =0; j < config.site.services.length; j++) {
-    const destPath = `${servicesOutputPath}/${config.site.services[j].id}`;
-    fse.mkdirsSync(destPath);
-    fileGenerator.generateServices(destPath, config, '.js', j);
-  }
-}
-
-const initialize = (files, subfolder, distPath, config, isWidget) => {
-  files.forEach((file, i) => {
-    const fileData = path.parse(file);
-    let destPath = '';
-    if(!isWidget) {
-      destPath = path.join(distPath, fileData.dir);
-      fse.mkdirsSync(destPath);
+const run = async (args) => {
+    console.log(`please wait...`);
+    switch (args[1]) {
+        case 'serve':
+            console.log(`launch server`);
+            await exe(`json-server --watch ./jsonServer/db.json`);
+            break;
+        default:
+            break;
     }
+};
 
-    // Read page file
-    const data = fse.readFileSync(`../${subfolder}/${file}`, 'utf-8');
 
-    // Generate templateConfig
-    const pageData = frontMatter(data);
-    const templateConfig =  Object.assign({}, config, {
-      page: pageData.attributes
-    });
-
-    // Generate files
-    if(isWidget) {
-      for(var j =0; j < config.site.jsonSchema.length; j++) {
-        destPath = path.join(distPath, config.site.jsonSchema[j].id);
-        fse.mkdirsSync(destPath);
-        fileGenerator.generateWidgets(srcPath, config, '.js', j);
-        fileGenerator.generateTestFiles(srcPath, config.site.jsonSchema[j].id, '.test.js', isWidget );
-        // Generate Css files
-        fse.writeFileSync(`${destPath}/${config.site.jsonSchema[j].id}.component.scss`, ``);
-      }
-    } else {
-      // Generate page content according to file type
-      let pageContent = pageContentGenerator.generate(fileData, pageData, subfolder,templateConfig, file, srcPath);
-
-      // Render layout with page contents
-      const completePage = renderLayout(pageData, templateConfig, pageContent, isWidget);
-
-      // Save the html file
-      fse.writeFileSync(`${destPath}/${fileData.name}.template.jsx`, completePage);
-
-      fileGenerator.generateComponents(srcPath, fileData, '.js');
-      fileGenerator.generateTranslationFiles(srcPath, fileData, '.js' );
-      fileGenerator.generateRoutes(srcPath, files);
-      fileGenerator.generateTestFiles(srcPath, fileData.name, '.test.js', isWidget );
-      // Generate Css files
-      fse.writeFileSync(`${destPath}/${fileData.name}.component.scss`, ``);
+if(args && args.length > 1) {
+    switch (args[0]) {
+        case 'gen':
+            create(args);
+            break;
+        case 'run':
+            run(args);
+            break;
+        default:
+            break;
     }
-  });
+} else {
+    console.log(`please insert a command (run serve | gen [appname])`);
 }
-
-init.then((config) => {
-  srcPath = `../${args}${config.build.srcPath}`;
-  distPath = `../${args}${config.build.outputPath}`;
-  widgetsOutputPath = `../${args}${config.build.widgetsOutputPath}`;
-  servicesOutputPath = `../${args}${config.build.servicesOutputPath}`;
-  console.log(widgetsOutputPath);
-  jsonSchema = config.site.jsonSchema;
-
-  // Clear destination folders
-  fse.emptyDirSync(distPath);
-  fse.emptyDirSync(widgetsOutputPath);
-
-  // Read pages
-  const files = glob.sync('**/*.@(md|ejs|html|htm)', {
-    cwd: `../templates/pages`
-  });
-  console.log(files);
-
-  // Init pages
-  initialize(files,'/templates/pages',distPath,config, false);
-
-
-  // Read widgets
-  const widgets = glob.sync('**/*.@(md|ejs|html|htm)', {
-    cwd: `../templates/widgets`
-  });
-
-  // Init widgets
-  initialize(widgets,'/templates/widgets',widgetsOutputPath,config, true);
-  initializeServices(config, servicesOutputPath);
-})

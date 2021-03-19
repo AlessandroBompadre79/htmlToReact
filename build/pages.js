@@ -1,15 +1,15 @@
-// Libriries
+// Libraries
 const fse = require('fs-extra');
 const path = require('path');
 const ejs = require('ejs');
 const frontMatter = require('front-matter');
 const glob = require('glob');
 // Utilities
-const fileGenerator = require('./filesGenerator/index');
-const pageContentGenerator = require('./pageContentGenerator/index');
+const fileGenerator = require('../filesGenerator/index');
+const pageContentGenerator = require('../pageContentGenerator/index');
 
 // Config
-const configPromise = require('./site.config');
+const configPromise = require('../site.config');
 const [,, ...args] = process.argv
 
 let srcPath;

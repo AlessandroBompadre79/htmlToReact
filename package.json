@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "create": "node ./build/basic_app",
-    "gen": "npx create-react-app --template file:./cra-template",
-    "build": "node ./build",
-    "genPages": "node ./build/pages",
-    "genServices": "node ./build/services",
-    "genWidgets": "node ./build/widgets",
-    "serve": "json-server --watch ./jsonServer/db.json"
+    "create": "node ./build.js gen app",
+    "build": "node ./build.js gen all",
+    "gen": "node ./build.js gen",
+    "genPages": "node ./build.js gen pages",
+    "genServices": "node ./build.js gen services",
+    "genWidgets": "node ./build.js gen widgets",
+    "serve": "node ./build.js run serve"
   },
   "dependencies": {
     "chalk": "^2.4.1",

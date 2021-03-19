@@ -1,6 +1,6 @@
 const fse = require('fs-extra');
-const fileGenerator = require('./filesGenerator/index');
-const configPromise = require('./site.config');
+const fileGenerator = require('../filesGenerator/index');
+const configPromise = require('../site.config');
 
 const [,, ...args] = process.argv
 let servicesOutputPath;

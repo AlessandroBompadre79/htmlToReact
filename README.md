@@ -1,3 +1,3 @@
 # htmlToReact
 
-Entro into scripts folder and the follow the README.md' instruction
+Entro into scripts folder and follow the README.md' instruction

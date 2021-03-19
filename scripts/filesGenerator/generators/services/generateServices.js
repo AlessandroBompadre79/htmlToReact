@@ -1,7 +1,9 @@
 const fse = require('fs-extra');
-let interfaceContent = require('./templates/interface.template').interfaceContent;
-let methodContent = require('./templates/method.template').methodContent;
-let content = require('./templates/service.template').content;
+const _import = require('../../utils/importFiles').import;
+
+let interfaceContent = _import('./filesGenerator/generators/services/templates/interface.template.js');
+let methodContent = _import('./filesGenerator/generators/services/templates/method.template.js');
+let content = _import('./filesGenerator/generators/services/templates/service.template.js');
 
 module.exports = {
   generate: (srcPath, config, ext, i) => {

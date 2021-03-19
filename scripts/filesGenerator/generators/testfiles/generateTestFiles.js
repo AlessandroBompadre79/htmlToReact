@@ -1,6 +1,8 @@
 const utility = require('../../../utility');
 const fse = require('fs-extra');
-let content = require('./templates/test.template').content;
+const _import = require('../../utils/importFiles').import;
+
+let content = _import('./filesGenerator/generators/testfiles/templates/test.template.js');
 
 module.exports = {
   generate: (srcPath, name, ext, isWidget) => {

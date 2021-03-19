@@ -1,9 +1,10 @@
 const utility = require('../../../utility');
 const fse = require('fs-extra');
+const _import = require('../../utils/importFiles').import;
 
-let jsonContent = require('./templates/json.schema').jsonContent;
-let uiContent = require('./templates/ui.schema').uiContent;
-let content = require('./templates/widget.template').content;
+let jsonContent = _import('./filesGenerator/generators/widgets/templates/json.schema.js');
+let uiContent = _import('./filesGenerator/generators/widgets/templates/ui.schema.js');
+let content = _import('./filesGenerator/generators/widgets/templates/widget.template.js');
 
 module.exports = {
   generate: (srcPath, config, ext, i) => {

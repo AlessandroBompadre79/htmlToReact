@@ -1,13 +1,10 @@
-module.exports = {
-  content :`
-  const PlaceHolderComponentTranslate = {
-    it: {
-      PlaceHolder:'PlaceHolder'
-    },
-    en: {
-      PlaceHolder:'PlaceHolder'
-    }
+const PlaceHolderComponentTranslate = {
+  it: {
+    PlaceHolder:'PlaceHolder'
+  },
+  en: {
+    PlaceHolder:'PlaceHolder'
   }
+}
 
-  export default PlaceHolderComponentTranslate;`
-};
+export default PlaceHolderComponentTranslate;

@@ -1,5 +1,3 @@
-module.exports = {
-    jsonContent: `const jsonSchema = {{schemaPlaceHolder}};
+const jsonSchema = {{schemaPlaceHolder}};
 
-export default jsonSchema;`
-};
+export default jsonSchema;

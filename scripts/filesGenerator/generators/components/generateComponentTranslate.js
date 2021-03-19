@@ -1,6 +1,8 @@
 const utility = require('../../../utility');
 const fse = require('fs-extra');
-let content = require('./templates/compontent.translate.template').content;
+const _import = require('../../utils/importFiles').import;
+
+let content = _import('./filesGenerator/generators/components/templates/compontent.translate.template.js');
 
 module.exports = {
   generate: (srcPath, fileData, ext) => {

@@ -1,5 +1,3 @@
-module.exports = {
-    uiContent: `const uiSchema = {{uischemaPlaceHolder}}
+const uiSchema = {{uischemaPlaceHolder}}
 
-    export default uiSchema;`
-};
+export default uiSchema;

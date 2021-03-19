@@ -1,9 +1,7 @@
-module.exports = {
-    interfaceContent: `import PropTypes from 'prop-types';
-    const interfacePlaceHolderInterface = props => props;
+import PropTypes from 'prop-types';
+const interfacePlaceHolderInterface = props => props;
 
-    interfacePlaceHolderInterface.propTypes =  {
-    interfacesPlaceHolder};
+interfacePlaceHolderInterface.propTypes =  {
+interfacesPlaceHolder};
 
-    export default interfacePlaceHolderInterface;`
-};
+export default interfacePlaceHolderInterface;

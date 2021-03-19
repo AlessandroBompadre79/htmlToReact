@@ -1,0 +1,18 @@
+.sub-container {
+    padding: 5px;
+    border-right: 1px solid #E8E8E8;
+    &:last-child {
+        border-right: 0;
+    }
+}
+
+.title {
+    text-align: left;
+    margin-top: 10px;
+    line-height: 1.2;
+    text-transform: capitalize;
+    font-family: "Source Sans Pro",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-weight: unset;
+    color: #666;
+}

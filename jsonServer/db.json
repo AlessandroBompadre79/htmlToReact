@@ -1,0 +1,101 @@
+{
+    "jsonSchema": [{
+        "id": "json-form",
+        "type": "object",
+        "properties": {
+            "agreement_partition_id": {
+                "type": "string",
+                "minLength": 2
+            },
+            "party_key": {
+                "type": "string",
+                "minLength": 2
+            }
+        },
+        "required": ["agreement_partition_id","party_key"]
+    }],
+    "uiSchema": [{
+        "type": "HorizontalLayout",
+        "elements": [
+            {
+                "type": "Control",
+                "scope": "#/properties/agreement_partition_id"
+            },
+            {
+                "type": "Control",
+                "scope": "#/properties/party_key"
+            }
+        ]
+    }],
+    "services": [
+        {
+            "id": "agreement",
+            "payloads": [{
+                "method": "getPolicy",
+                "params": [
+                    {
+                        "name":"agreement_partition_id",
+                        "type":"string",
+                        "required":true
+                    },
+                    {
+                        "name":"agreement_base_key",
+                        "type":"string",
+                        "required":true
+                    },
+                    {
+                        "name":"agreement_last_version_id",
+                        "type":"string",
+                        "required":true
+                    }
+                ]
+            },
+            {
+                "method": "getHistory",
+                "params": [
+                    {
+                        "name":"agreement_partition_id",
+                        "type":"string",
+                        "required":true
+                    },
+                    {
+                        "name":"agreement_base_key",
+                        "type":"string",
+                        "required":true
+                    }
+                ]
+            }]
+        },
+        {
+            "id": "account",
+            "payloads": [{
+                "method": "getParty",
+                "params": [
+                    {
+                        "name":"agreement_partition_id",
+                        "type":"string",
+                        "required":true
+                    },
+                    {
+                        "name":"party_key",
+                        "type":"string",
+                        "required":true
+                    }
+                ]
+            }]
+        },
+        {
+            "id": "report",
+            "payloads": [{
+                "method": "getReport",
+                "params": [
+                    {
+                        "name":"agreement_partition_id",
+                        "type":"string",
+                        "required":true
+                    }
+                ]
+            }]
+        }
+    ]
+}

@@ -8,7 +8,7 @@ In the project directory, you can run:
 
 create a react app in appname folder
 
-### `npm run serve
+### `npm run serve`
 
 run a basic server from where read information for services and widgets
 

@@ -26,7 +26,7 @@ async function waitForData() {
       }
     };
   } catch(err) {
-    // console.log(err);
+    console.log(err);
     return [];  
   }
 }

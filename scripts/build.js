@@ -21,6 +21,9 @@ const exe = async (string) => {
 }
 
 const create = async (args) => {
+    if(args.length < 3) {
+        return throwEerror();
+    }
     switch (args[1]) {
         case 'app':
             console.log(`generate app in ../${args[2]}`);

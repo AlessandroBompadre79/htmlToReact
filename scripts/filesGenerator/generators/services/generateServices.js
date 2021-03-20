@@ -18,7 +18,7 @@ module.exports = {
       let comments = '';
       let interfaces = '';
       payload.params.forEach(param => {
-          comments += `   * @param {${param.type}} params.${param.name} - ${param.name}${required(param.required)}\n`
+          comments += `     * @param {${param.type}} params.${param.name} - ${param.name}${required(param.required)}\n`
           interfaces += `   ${param.name}: PropTypes.${param.type}${isRequired(param.required)},\n`          
       });
       importInterfaces += `import ${capitalize(payload.method)}Interface from './interfaces/authenticate.interface';\n`;

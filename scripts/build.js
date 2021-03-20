@@ -14,7 +14,6 @@ const exe = async (string) => {
         if(stderr) {
             console.log('stderr', stderr);
         }
-        
     });
     coffeeProcess.stdout.on('data', function(data) {
         console.log(data);
@@ -52,9 +51,12 @@ const create = async (args) => {
             break;
 
         default:
+            throwEerror();
             break;
     }
 };
+
+const throwEerror = () => {console.log(`please run one of following commands:\n  run serve\n  gen [app|services|widgets|pages|all] appname)`)};
 
 const run = async (args) => {
     console.log(`please wait...`);
@@ -64,6 +66,7 @@ const run = async (args) => {
             await exe(`json-server --watch ./jsonServer/db.json`);
             break;
         default:
+            throwEerror();
             break;
     }
 };
@@ -78,8 +81,9 @@ if(args && args.length > 1) {
             run(args);
             break;
         default:
+            throwEerror();
             break;
     }
 } else {
-    console.log(`please insert a command (run serve | gen [appname])`);
+    throwEerror();
 }

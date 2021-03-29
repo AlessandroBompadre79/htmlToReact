@@ -27,7 +27,7 @@ const create = async (args) => {
     switch (args[1]) {
         case 'app':
             console.log(`generate app in ../${args[2]}`);
-            exe(`npx create-react-app --template file:./cra-template ${args[2]}`);
+            exe(`npx create-react-app --template file:./cra-template ../${args[2]}`);
             break;
 
         case 'pages':

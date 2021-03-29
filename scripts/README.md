@@ -2,15 +2,20 @@
 
 ## Available Scripts
 
-In the project directory, you can run:
+In this directory, you can run:
 
 ### `npm run create [appname]`
 
-create a react app in appname folder
+create a react app in appname folder.
+
+### `npm run build [appname]`
+
+runs serve and generates everything.
 
 ### `npm run serve`
 
-run a basic server from where read information for services and widgets
+run a basic server from where read information for services and widgets. 
+You need to manually install json-server globally using `npm install -g json-server`
 
 ### `npm run gen pages [appname]`
 
